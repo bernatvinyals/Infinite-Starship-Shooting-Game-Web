@@ -66,6 +66,9 @@ function joc(){
 		case 2:
 			loopGame();
 			break;
+		case 3:
+			loopMainMenu();
+			break;
 		case 4:
 		//cagaste!
 			break;
@@ -115,6 +118,8 @@ function inicialitzacioICarregaImatges(){
 	img[2].src = "./image/bg/bg3.png";
 	img[3] = document.createElement("img");
 	img[3].src = "./image/bg/bg4.png";
+	img[4] = document.createElement("img");
+	img[4].src = "./image/logos/logo.png";
 	Player.img = document.createElement("img");
 	Player.img.src = "./image/ship.png";
 	for (var i =0; i <  Enemy.length; i++) {
@@ -131,13 +136,13 @@ function inicialitzacioICarregaImatges(){
 
 function esperarCarregarImatges(){
 	var loading = false;
-	if (Player.img.complete == true && img[1].complete&& img[3].complete && img[0].complete && img[2].complete && Enemy[0].img.complete == true && Enemy[1].img.complete == true && Enemy[2].img.complete == true && Enemy[3].img.complete == true && Enemy[4].img.complete == true&& Misiles[0].img.complete == true && Misiles[1].img.complete == true && Misiles[2].img.complete == true && Misiles[3].img.complete == true && Misiles[4].img.complete == true){
+	if (Player.img.complete == true && img[1].complete&& img[4].complete && img[3].complete && img[0].complete && img[2].complete && Enemy[0].img.complete == true && Enemy[1].img.complete == true && Enemy[2].img.complete == true && Enemy[3].img.complete == true && Enemy[4].img.complete == true&& Misiles[0].img.complete == true && Misiles[1].img.complete == true && Misiles[2].img.complete == true && Misiles[3].img.complete == true && Misiles[4].img.complete == true){
 		loading = true;
 	}
 	
 	if (loading == true){
 		BGMusic.play();
-		scene = 2;
+		scene = 3;
 	}
 }
 
@@ -344,4 +349,34 @@ function loopGame(){
 	ctx.fillStyle = "white";
 	ctx.fillText(("Lives: "+ Player.Life), 10, 50); 
 	ctx.fillText(("Points: "+ Points), 10, 100); 
+}
+
+
+
+function checkForConfirmation() {
+	$(document).ready(function(){
+        $(document).keydown(function(event){
+            var keycode = (event.keycode ? event.keyCode : event.which);
+            if(keycode==32){
+            	scene = 2;
+            }
+        });
+    });
+}
+
+function loopMainMenu() {
+	var canvas = document.getElementById("myCanvas");
+	var ctx = canvas.getContext("2d");
+	ctx.clearRect(0,0,640,480);	
+	//Creating parallax
+	ctx.drawImage(img[0],0,0);
+	ctx.drawImage(img[2],bg2X,bg2Y);
+	ctx.drawImage(img[3],bg3X,bg3Y);
+	ctx.drawImage(img[1],bgX,bgY);
+	ctx.drawImage(img[4],50,100);
+	ctx.font = "47px DotGothic16";
+	ctx.fillStyle = "white";
+	ctx.fillText("Press SPACEBAR to start", 50, 400); 
+	checkForConfirmation();
+	
 }
