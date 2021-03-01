@@ -25,14 +25,13 @@ function Misile(X,Y,W,H){
 	var img;
 }
 var Player = new Ship (320,400,80,59);
-Player.Life = 3;
 var Points=0;
 var Enemy = [
-	new Ship ((Math.random()*600),(Math.random()*-400),60,59),
-	new Ship ((Math.random()*600),(Math.random()*-400),60,59),
-	new Ship ((Math.random()*600),(Math.random()*-400),60,59),
-	new Ship ((Math.random()*600),(Math.random()*-400),60,59),
-	new Ship ((Math.random()*600),(Math.random()*-400),60,59)
+	new Ship ((Math.random()*600),(Math.random()*-600),60,59),
+	new Ship ((Math.random()*600),(Math.random()*-600),60,59),
+	new Ship ((Math.random()*600),(Math.random()*-600),60,59),
+	new Ship ((Math.random()*600),(Math.random()*-600),60,59),
+	new Ship ((Math.random()*600),(Math.random()*-600),60,59)
 ];
 
 var Misiles = [
@@ -55,6 +54,7 @@ var scene = 0;
 var img = {};
 
 var restartGame= false;
+var Enemyposy=0.5;
 function joc(){
 	switch(scene){
 		case 0:
@@ -70,7 +70,7 @@ function joc(){
 			loopMainMenu();
 			break;
 		case 4:
-		//cagaste!
+			loopGameOver();
 			break;
 	}
 
@@ -138,6 +138,7 @@ function esperarCarregarImatges(){
 	var loading = false;
 	if (Player.img.complete == true && img[1].complete&& img[4].complete && img[3].complete && img[0].complete && img[2].complete && Enemy[0].img.complete == true && Enemy[1].img.complete == true && Enemy[2].img.complete == true && Enemy[3].img.complete == true && Enemy[4].img.complete == true&& Misiles[0].img.complete == true && Misiles[1].img.complete == true && Misiles[2].img.complete == true && Misiles[3].img.complete == true && Misiles[4].img.complete == true){
 		loading = true;
+		Enemyposy = 0;
 	}
 	
 	if (loading == true){
@@ -151,8 +152,9 @@ function esperarCarregarImatges(){
 var ticksForSpacebar =101;
 var bulletIndex=0;
 var audioAlradyPlayingShoot=false;
+var audioAlradyPlaying = false;
 function shoot(){
-	if (ticksForSpacebar >= 50) {	
+	if (ticksForSpacebar >= 20) {	
 		ticksForSpacebar=0;
 		if (audioAlradyPlaying) {
 			ShootSoundR.play();
@@ -170,7 +172,7 @@ function shoot(){
 		}
 	}
 }
-var audioAlradyPlaying = false;
+
 function checkForShooting(){
 	for (var i = 0; i < Misiles.length; i++) {
 		if (Misiles[i].PosY >= 0) {
@@ -254,11 +256,11 @@ function movPlayer(){
     	shoot();
     }
     if(rightArrow==true){
-        dirVector=dirVector+5;    
+        dirVector=dirVector+6;    
         Player.PosX=dirVector;     
     }
     if(leftArrow==true){
-        dirVector=dirVector-5;
+        dirVector=dirVector-6;
         Player.PosX=dirVector;    
     }
     if(dirVector<0){
@@ -286,13 +288,17 @@ function repeatBG(){
 		bg3X=((Math.random()*300));
 	}
 }
+
 function enemyMov(){
 	for (var i = 0; i < Enemy.length; i++) {
 		if (Enemy[i].PosY <= 500) {
-		Enemy[i].PosY= Enemy[i].PosY+1;
+		Enemy[i].PosY= Enemy[i].PosY=Enemy[i].PosY + Enemyposy;
 		}else{
+			if (Points <=0) {Points = 0;}
+			else{Points = Points-100;}
+			
 			Enemy[i].PosX = (Math.random()*600);
-			Enemy[i].PosY = (Math.random()*-400);
+			Enemy[i].PosY = (Math.random()*-600);
 		}
 	}
 }
@@ -305,7 +311,7 @@ function respEnemy(ctx){
 	for (var i = 0; i < Enemy.length; i++) {
 		if (CheckCollision(Player,Enemy[i])) {
 			Enemy[i].PosX = (Math.random()*600);
-			Enemy[i].PosY = (Math.random()*-400);
+			Enemy[i].PosY = (Math.random()*-600);
 			Player.Life -= 1;
 			if (Player.Life <= 0) {
 				scene = 4; // Where 4 is Game Over Scene
@@ -313,7 +319,9 @@ function respEnemy(ctx){
 		}
 	}
 }
-
+function incrementYEnemy(){
+	Enemyposy = Enemyposy + 0.001;
+}
 
 function loopGame(){
 	if (restartGame) {
@@ -326,6 +334,7 @@ function loopGame(){
 
 	repeatBG();
 	movPlayer();
+	incrementYEnemy();
 	enemyMov();
 	checkForShooting();
 
@@ -359,9 +368,26 @@ function checkForConfirmation() {
             var keycode = (event.keycode ? event.keyCode : event.which);
             if(keycode==32){
             	scene = 2;
+            	restaringLoop();
             }
         });
     });
+}
+function restaringLoop(){
+	for (var i = 0; i < Enemy.length; i++) {
+		Enemy[i].PosX = (Math.random()*600);
+		Enemy[i].PosY = (Math.random()*-600);
+		Player.Life = 3;
+		bgX=((Math.random()*640)-60);
+		bg2Y=40;
+		bg2X=((Math.random()*300));
+		bg3Y=300;
+		bg3X=((Math.random()*300));
+		ticksForSpacebar =101;
+		bulletIndex=0;
+		audioAlradyPlayingShoot=false;
+		audioAlradyPlaying = false;
+	}
 }
 
 function loopMainMenu() {
@@ -377,6 +403,22 @@ function loopMainMenu() {
 	ctx.font = "47px DotGothic16";
 	ctx.fillStyle = "white";
 	ctx.fillText("Press SPACEBAR to start", 50, 400); 
+	checkForConfirmation();
+	
+}
+function loopGameOver(){
+	var canvas = document.getElementById("myCanvas");
+	var ctx = canvas.getContext("2d");
+	ctx.clearRect(0,0,640,480);	
+	//Creating parallax
+	ctx.drawImage(img[0],0,0);
+	ctx.drawImage(img[2],bg2X,bg2Y);
+	ctx.drawImage(img[3],bg3X,bg3Y);
+	ctx.drawImage(img[1],bgX,bgY);
+	ctx.font = "47px DotGothic16";
+	ctx.fillStyle = "white";
+	ctx.fillText("Game Over", 220, 100); 
+	ctx.fillText("Press SPACEBAR to restart", 32, 400); 
 	checkForConfirmation();
 	
 }
