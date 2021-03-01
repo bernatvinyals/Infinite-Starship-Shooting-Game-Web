@@ -366,7 +366,7 @@ function checkForConfirmation() {
 	$(document).ready(function(){
         $(document).keydown(function(event){
             var keycode = (event.keycode ? event.keyCode : event.which);
-            if(keycode==32){
+            if(keycode==32 && scene != 2){
             	scene = 2;
             	restaringLoop();
             }
@@ -377,17 +377,17 @@ function restaringLoop(){
 	for (var i = 0; i < Enemy.length; i++) {
 		Enemy[i].PosX = (Math.random()*600);
 		Enemy[i].PosY = (Math.random()*-600);
-		Player.Life = 3;
-		bgX=((Math.random()*640)-60);
-		bg2Y=40;
-		bg2X=((Math.random()*300));
-		bg3Y=300;
-		bg3X=((Math.random()*300));
-		ticksForSpacebar =101;
-		bulletIndex=0;
-		audioAlradyPlayingShoot=false;
-		audioAlradyPlaying = false;
 	}
+	Player.Life = 3;
+	bgX=((Math.random()*640)-60);
+	bg2Y=40;
+	bg2X=((Math.random()*300));
+	bg3Y=300;
+	bg3X=((Math.random()*300));
+	ticksForSpacebar =101;
+	bulletIndex=0;
+	audioAlradyPlayingShoot=false;
+	audioAlradyPlaying = false;
 }
 
 function loopMainMenu() {
