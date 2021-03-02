@@ -92,13 +92,13 @@ function inicialitzacioICarregaImatges(){
 	HitSoundR.style.display = "none";
 
 	ShootSound = document.createElement("audio");
-	ShootSound.src = "./sounds/HitSound.mp3";
+	ShootSound.src = "./sounds/ShootSound.mp3";
 	ShootSound.setAttribute("preload", "auto");
 	ShootSound.setAttribute("controls", "none");
 	ShootSound.style.display = "none";
 
 	ShootSoundR = document.createElement("audio");
-	ShootSoundR.src = "./sounds/HitSound.mp3";
+	ShootSoundR.src = "./sounds/ShootSound.mp3";
 	ShootSoundR.setAttribute("preload", "auto");
 	ShootSoundR.setAttribute("controls", "none");
 	ShootSoundR.style.display = "none";
@@ -138,7 +138,6 @@ function esperarCarregarImatges(){
 	var loading = false;
 	if (Player.img.complete == true && img[1].complete&& img[4].complete && img[3].complete && img[0].complete && img[2].complete && Enemy[0].img.complete == true && Enemy[1].img.complete == true && Enemy[2].img.complete == true && Enemy[3].img.complete == true && Enemy[4].img.complete == true&& Misiles[0].img.complete == true && Misiles[1].img.complete == true && Misiles[2].img.complete == true && Misiles[3].img.complete == true && Misiles[4].img.complete == true){
 		loading = true;
-		Enemyposy = 0;
 	}
 	
 	if (loading == true){
@@ -184,6 +183,7 @@ function checkForShooting(){
 					Enemy[iy].PosX = (Math.random()*600);
 					Enemy[iy].PosY = (Math.random()*-400);
 					Points = Points+ 100;
+					Enemyposy = Enemyposy + 0.1;
 					if (audioAlradyPlaying) {
 						HitSoundR.play();
 						audioAlradyPlaying = false;
@@ -292,7 +292,7 @@ function repeatBG(){
 function enemyMov(){
 	for (var i = 0; i < Enemy.length; i++) {
 		if (Enemy[i].PosY <= 500) {
-		Enemy[i].PosY= Enemy[i].PosY=Enemy[i].PosY + Enemyposy;
+		Enemy[i].PosY= Enemy[i].PosY=Enemy[i].PosY + Enemyposy+0.5;
 		}else{
 			if (Points <=0) {Points = 0;}
 			else{Points = Points-100;}
@@ -319,8 +319,12 @@ function respEnemy(ctx){
 		}
 	}
 }
+
+
+
+
 function incrementYEnemy(){
-	Enemyposy = Enemyposy + 0.001;
+	Enemyposy = Enemyposy + 0.01;
 }
 
 function loopGame(){
@@ -334,7 +338,6 @@ function loopGame(){
 
 	repeatBG();
 	movPlayer();
-	incrementYEnemy();
 	enemyMov();
 	checkForShooting();
 
@@ -388,6 +391,8 @@ function restaringLoop(){
 	bulletIndex=0;
 	audioAlradyPlayingShoot=false;
 	audioAlradyPlaying = false;
+	Enemyposy = 0.01;
+	Points = 0;
 }
 
 function loopMainMenu() {
