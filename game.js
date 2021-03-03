@@ -359,7 +359,7 @@ function loopGame(){
 	ctx.drawImage(Player.img, Player.PosX, Player.PosY); //Showing Player
 	ctx.font = "47px DotGothic16";
 	ctx.fillStyle = "white";
-	ctx.fillText(("Lives: "+ Player.Life), 10, 50); 
+	ctx.fillText(("HP: "+ Player.Life), 10, 50); 
 	ctx.fillText(("Points: "+ Points), 10, 100); 
 }
 
