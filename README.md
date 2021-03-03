@@ -17,6 +17,6 @@ Get the maximum amount of points posible.
 The player has to shoot enemies by pressing Space and moving left and right on the screen. Every time an enemy goes beyond the player reach, meaning that its behind the player, the player score will be reduced by 100 points Ej: `Points: 200-100 = 100`.
 If one enemy colides with the player, the enemy will disapear and the player will lose 1 HP point.
 ### Screenshots
-![Picture of the main menu](/screenshots/s1.png)
-![Picture in game](/screenshots/s2.png)
-![Picture of game over screen](/screenshots/s3.png)
+![Picture of the main menu](/screenshots/s1.PNG)
+![Picture in game](/screenshots/s2.PNG)
+![Picture of game over screen](/screenshots/s3.PNG)
