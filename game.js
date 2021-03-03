@@ -41,7 +41,7 @@ var Misiles = [
 	new Misile (0,0,60,59),
 	new Misile (0,0,60,59)
 ];
-
+//Sound Variables
 var HitSound;
 var HitSoundR;
 var ShootSound;
@@ -53,8 +53,32 @@ var BGMusic;
 var scene = 0;	
 var img = {};
 
-var restartGame= false;
 var Enemyposy=0.5;
+
+//Background Variables
+var bgY=240;
+var bgX=((Math.random()*640)-60);
+var bg2Y=40;
+var bg2X=((Math.random()*300));
+var bg3Y=300;
+var bg3X=((Math.random()*300));
+
+
+//Variables for keyboard controls and movement
+var dirVector=320;
+var dirVectorY=400;
+var spacebar = false;
+var rightArrow = false;
+var leftArrow = false;
+var upArrow = false;
+var downArrow = false;
+
+//Variables for Shooting + audio when shooting
+var ticksForSpacebar =101;
+var bulletIndex=0;
+var audioAlradyPlayingShoot=false;
+var audioAlradyPlaying = false;
+
 function joc(){
 	switch(scene){
 		case 0:
@@ -148,12 +172,12 @@ function esperarCarregarImatges(){
 
 
 
-var ticksForSpacebar =101;
-var bulletIndex=0;
-var audioAlradyPlayingShoot=false;
-var audioAlradyPlaying = false;
+
 function shoot(){
-	if (ticksForSpacebar >= 20) {	
+	//When called a bullet will shoot from the players position
+	//ticksForSpacebar is the amount of time that has elapsed since
+	//the last missile
+	if (ticksForSpacebar >= 40) {	
 		ticksForSpacebar=0;
 		if (audioAlradyPlaying) {
 			ShootSoundR.play();
@@ -201,6 +225,7 @@ function checkForShooting(){
 	}
 }
 function showMisiles(ctx){
+	//Display all missiles
 	for (var i = 0; i < Misiles.length; i++) {
 		ctx.drawImage(Misiles[i].img,Misiles[i].PosX,Misiles[i].PosY);
 	}
@@ -209,25 +234,16 @@ function showMisiles(ctx){
 
 
 
-var bgY=240;
-var bgX=((Math.random()*640)-60);
-var bg2Y=40;
-var bg2X=((Math.random()*300));
-var bg3Y=300;
-var bg3X=((Math.random()*300));
 
-var dirVector=320;
-var spacebar;
-var rightArrow;
-var leftArrow;
 
 function movPlayer(){
+	//This function checks what key's pressed and preforms an 
+	//action aferwards
     $(document).ready(function(){
         $(document).keydown(function(event){
             var keycode = (event.keycode ? event.keyCode : event.which);
-            if(keycode==32){
+            if(keycode==32 ){
             	spacebar=true;
-
             }
             if(keycode==39){
                 rightArrow=true;
@@ -235,11 +251,16 @@ function movPlayer(){
             if(keycode==37){
                 leftArrow=true;        
             }
+            if(keycode==38){
+                upArrow=true;        
+            }
+            if(keycode==40){
+                downArrow=true;        
+            }
         });
         
         $(document).keyup(function(event){
             var keycode = (event.keycode ? event.keyCode : event.which);
-            
             if(keycode==32){
                 spacebar=false;
             }
@@ -249,11 +270,25 @@ function movPlayer(){
             if(keycode==37){
                 leftArrow=false;
             }
+            if(keycode==38){
+                upArrow=false;        
+            }
+            if(keycode==40){
+                downArrow=false;        
+            }
         });
         
     });
     if (spacebar) {
     	shoot();
+    }
+    if(downArrow==true){
+        dirVectorY=dirVectorY+6;    
+        Player.PosY=dirVectorY;     
+    }
+    if(upArrow==true){
+        dirVectorY=dirVectorY-6;
+        Player.PosY=dirVectorY;    
     }
     if(rightArrow==true){
         dirVector=dirVector+6;    
@@ -275,6 +310,8 @@ function movPlayer(){
 
 
 function repeatBG(){
+	//This function checks if the bakground is not on the players 
+	//view and it teleports above the screen to come down again
 	if (bgY> 500) {
 		bgY = -300;
 		bgX = ((Math.random()*640)-60);
@@ -290,6 +327,8 @@ function repeatBG(){
 }
 
 function enemyMov(){
+	//This function will alwasy be called and will bring down the enemy
+	//until it is below the screen and it will also reduce players points
 	for (var i = 0; i < Enemy.length; i++) {
 		if (Enemy[i].PosY <= 500) {
 		Enemy[i].PosY= Enemy[i].PosY=Enemy[i].PosY + Enemyposy+0.5;
@@ -304,10 +343,12 @@ function enemyMov(){
 }
 
 function respEnemy(ctx){
+	//This part will always render the enemy regardless if 
+	//it is on the canvas or not
 	for (var i = 0; i < Enemy.length; i++) {
 		ctx.drawImage(Enemy[i].img,Enemy[i].PosX,Enemy[i].PosY);
 	}
-
+	//Checks if any enemy is touching the player 
 	for (var i = 0; i < Enemy.length; i++) {
 		if (CheckCollision(Player,Enemy[i])) {
 			Enemy[i].PosX = (Math.random()*600);
@@ -324,14 +365,11 @@ function respEnemy(ctx){
 
 
 function incrementYEnemy(){
-	Enemyposy = Enemyposy + 0.01;
+	//Simple function to add more velocity to enemies when called
+	Enemyposy = Enemyposy + 0.005;
 }
 
 function loopGame(){
-	if (restartGame) {
-		Player.Life = 3;
-		Points = 0;
-	}
 	var jocActiu = true; 
 	var canvas = document.getElementById("myCanvas");
 	var ctx = canvas.getContext("2d");
@@ -342,11 +380,12 @@ function loopGame(){
 	checkForShooting();
 
 	ctx.clearRect(0,0,640,480);	
-	//Creating parallax
+	//Displaying Background parallax
 	ctx.drawImage(img[0],0,0);
 	ctx.drawImage(img[2],bg2X,(bg2Y=bg2Y + 0.5));
 	ctx.drawImage(img[3],bg3X,(bg3Y=bg3Y + 1));
 	ctx.drawImage(img[1],bgX,(bgY=bgY + 1.5));
+	
 	//Out of bounds check
 	if (Player.PosX <=0) {
 		Player.PosX = 0;
@@ -355,12 +394,12 @@ function loopGame(){
 	}
 	
 	respEnemy(ctx); //Showing Enemies
-	showMisiles(ctx);
+	showMisiles(ctx); //Displaying Bullets/Missiles
 	ctx.drawImage(Player.img, Player.PosX, Player.PosY); //Showing Player
-	ctx.font = "47px DotGothic16";
-	ctx.fillStyle = "white";
-	ctx.fillText(("HP: "+ Player.Life), 10, 50); 
-	ctx.fillText(("Points: "+ Points), 10, 100); 
+	ctx.font = "47px DotGothic16"; //Setting UI Font
+	ctx.fillStyle = "white";//Setting UI text Color
+	ctx.fillText(("HP: "+ Player.Life), 10, 50); //Displays Lifes
+	ctx.fillText(("Points: "+ Points), 10, 100); //Displays points
 }
 
 
