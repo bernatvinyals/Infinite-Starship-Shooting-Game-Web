@@ -7,11 +7,58 @@
 		<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet"> 
 		<script src="./game.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script type="text/javascript">
+			window.addEventListener("keydown", function(e) {
+			    if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+			        e.preventDefault();
+			    }
+			}, false);
+		</script>
+		<style type="text/css">
+			body{
+				font-family: DotGothic16;
+				background: #0a0108;
+				color: white;
+				background-image: url("./image/bg/bgweb.jpg");
+				background-size:  cover;
+				background-repeat: no-repeat;
+				background-position: 50%;
+			}
+			#main{
+				margin:  10px auto;
+				width: 642px;
+				background: #0a0108;
+			}
+			#logo{
+				width:540px;
+				margin:  25px auto;
+			}
+			#innerbody{
+				border: 1px solid rgba(255,255,255,1);
+			}
+		</style>
 	</head>
 	<body onload="joc()">
-		<div>
-			<canvas id="myCanvas" width="640" height="480" style="border:1px solid #d3d3d3;">
+		<div id="main">
+			<div id="logo">
+				<img src="./image/logos/logo.png">
+			</div>
+			<div id="innerbody">
+				<div>
+					<canvas id="myCanvas" width="640" height="480" >
+				</div>
+				<div style="margin-top:20px; margin-bottom:20px;">
+					
+					<div style="margin-left: 8px; width: 632px;">
+						<h2>How to play</h2>
+						<p>The player has to shoot enemies by pressing Space and moving left and right on the screen. Every time an enemy goes beyond the player reach, meaning that its behind the player, the player score will be reduced by 100 points Ej: Points: 200-100 = 100.<br>If one enemy colides with the player, the enemy will disapear and the player will lose 1 HP point.</p>
+						<h2>Goal</h2>
+						<p>Get the maximum amount of points posible.</p>
+						<h2>Controls</h2>
+						<p>Left Arrow Key: Move player to the left. <br>Up Arrow Key: Move player upwards. <br>Down Arrow Key: Move player downwards <br>Right Arrow Key: Move player to the right. <br>Space: Shoot Misiles.</p>
+					</div>			
+				</div>
+			</div>
 		</div>
-		<img src="">
 	</body>
 </html>
