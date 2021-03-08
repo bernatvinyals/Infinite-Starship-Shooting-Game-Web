@@ -325,17 +325,39 @@ function repeatBG(){
 		bg3X=((Math.random()*300));
 	}
 }
+var enemySpriralValue=0.0;
+var definer = 1;
+var timenow = new Date;
+var timeelapsed = 0.0;
+
+function timerCount(){
+	var timeend = new Date;
+	timeelapsed = timeend.getTime() - timenow.getTime();
+}
+
+function enemySpriral(){
+	//Changes the enemy X directon int ordrer to produce a spriral effect.
+	//Instead of using Math.Sin this way we hav more control of what amount
+	//we want the enemy to sprital both left and right
+	if (enemySpriralValue >= 2) {definer = -1;}
+	if (enemySpriralValue <= -2) {definer = 1;}
+	enemySpriralValue = (enemySpriralValue+(0.01*definer));
+}
 
 function enemyMov(){
 	//This function will alwasy be called and will bring down the enemy
 	//until it is below the screen and it will also reduce players points
 	for (var i = 0; i < Enemy.length; i++) {
 		if (Enemy[i].PosY <= 500) {
-		Enemy[i].PosY= Enemy[i].PosY=Enemy[i].PosY + Enemyposy+0.5;
+		Enemy[i].PosY= Enemy[i].PosY + Enemyposy+0.5;
+		if (timeelapsed >= 50000 && timeelapsed <= 90000) {enemySpriral();}
+		else{
+			enemySpriralValue = 0.0;
+		}
+		if (timeelapsed >= 160000) {enemySpriral();}
+
+		Enemy[i].PosX = Enemy[i].PosX + enemySpriralValue;
 		}else{
-			if (Points <=0) {Points = 0;}
-			else{Points = Points-100;}
-			
 			Enemy[i].PosX = (Math.random()*600);
 			Enemy[i].PosY = (Math.random()*-600);
 		}
@@ -373,7 +395,7 @@ function loopGame(){
 	var jocActiu = true; 
 	var canvas = document.getElementById("myCanvas");
 	var ctx = canvas.getContext("2d");
-
+	timerCount();
 	repeatBG();
 	movPlayer();
 	enemyMov();
@@ -392,6 +414,11 @@ function loopGame(){
 	}if (Player.PosX >=640) {
 		Player.PosX = 640;
 	}
+	if (Player.PosY <=0) {
+		Player.PosY = 0;
+	}if (Player.PosY >=420) {
+		Player.PosY = 420;
+	}
 	
 	respEnemy(ctx); //Showing Enemies
 	showMisiles(ctx); //Displaying Bullets/Missiles
@@ -400,6 +427,7 @@ function loopGame(){
 	ctx.fillStyle = "white";//Setting UI text Color
 	ctx.fillText(("HP: "+ Player.Life), 10, 50); //Displays Lifes
 	ctx.fillText(("Points: "+ Points), 10, 100); //Displays points
+	ctx.fillText(("Time: "+ (Math.floor(timeelapsed/1000))),10, 460)
 }
 
 
@@ -416,6 +444,7 @@ function checkForConfirmation() {
     });
 }
 function restaringLoop(){
+	//Function to restart all propieties of a game
 	for (var i = 0; i < Enemy.length; i++) {
 		Enemy[i].PosX = (Math.random()*600);
 		Enemy[i].PosY = (Math.random()*-600);
@@ -432,6 +461,8 @@ function restaringLoop(){
 	audioAlradyPlaying = false;
 	Enemyposy = 0.01;
 	Points = 0;
+	timeelapsed = 0.0;
+	timenow = new Date;
 }
 
 function loopMainMenu() {
