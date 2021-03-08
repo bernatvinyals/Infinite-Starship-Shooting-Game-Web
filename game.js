@@ -493,7 +493,11 @@ function loopGameOver(){
 	ctx.font = "47px DotGothic16";
 	ctx.fillStyle = "white";
 	ctx.fillText("Game Over", 220, 100); 
-	ctx.fillText("Press SPACEBAR to restart", 32, 400); 
+	ctx.fillText("Points:",130, 160);
+	ctx.fillText("Time:  ",130, 200);
+	ctx.fillText((Points+""),430, 160);
+	ctx.fillText("Time:  ",130, 200);
+	ctx.fillText("Press SPACEBAR to restart", 32, 450); 
 	checkForConfirmation();
 	
 }
