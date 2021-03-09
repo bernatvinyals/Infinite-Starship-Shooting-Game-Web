@@ -497,6 +497,8 @@ function loopGameOver(){
 	ctx.fillText("Time:  ",130, 200);
 	ctx.fillText((Points+""),430, 160);
 	ctx.fillText("Time:  ",130, 200);
+	ctx.fillText((Math.floor(timeelapsed/1000)+""),430, 200);
+
 	ctx.fillText("Press SPACEBAR to restart", 32, 450); 
 	checkForConfirmation();
 	
