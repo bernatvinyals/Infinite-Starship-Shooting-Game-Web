@@ -65,20 +65,20 @@
 			deixaPantalla(obj);
 			if (obj.target.id == "caixa1") {spacebar=true;return;}
 			
-			if (cX < (obj.touches[0].pageX+10)){
+			if (cX < (obj.touches[0].pageX+5)){
 				console.log("Right");
 				rightArrow=true;
 			} 
-			if (cX > (obj.touches[0].pageX-10)) {
+			if (cX > (obj.touches[0].pageX-5)) {
 				console.log("Left");
 				leftArrow = true;
 			}
-			if (cY > (obj.touches[0].pageY-10)) {
+			if (cY > (obj.touches[0].pageY-5)) {
 			//if (obj.touches[0].pageY < (window.innerHeight - 100 - 50)) {
 				console.log("Up");
 				upArrow=true;
 			} 
-			if (cY < (obj.touches[0].pageY+10)) {
+			if (cY < (obj.touches[0].pageY+5)) {
 				console.log("Down");
 				downArrow=true;
 			}
