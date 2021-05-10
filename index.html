@@ -6,6 +6,10 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com">
 		<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet"> 
 		<script src="./game.js"></script>
+		<script src="./biblioteca.js"></script>
+		<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=0">
+		<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script type="text/javascript">
 			window.addEventListener("keydown", function(e) {
@@ -15,54 +19,85 @@
 			}, false);
 		</script>
 		<style type="text/css">
-			body{
+			html{
 				font-family: DotGothic16;
 				background: #0a0108;
 				color: white;
-				background-image: url("./image/bg/bgweb.jpg");
+				/*background-image: url("./image/bg/bgweb.jpg"); */
+				background-color: red;
 				background-size:  cover;
 				background-repeat: no-repeat;
-				background-position: 50% ;
+				background-position: 50%;
+				height: 100%;
 			}
-			#main{
-				margin:  10px auto;
-				width: 642px;
-				background: #0a0108;
-			}
-			#logo{
-				width:540px;
-				margin:  25px auto;
-			}
-			#innerbody{
-				border: 1px solid rgba(255,255,255,1);
+			canvas{
+				border: 0px;
+				margin: 0px;
 			}
 		</style>
 	</head>
-	<body onload="joc()">
-		<div id="main">
-			<div id="logo">
-				<img src="./image/logos/logo.png">
-			</div>
-			<div id="innerbody">
-				<div>
-					<canvas id="myCanvas" width="640" height="480" >
-				</div>
-				<div style="margin-top:20px; margin-bottom:20px;">
-					
-					<div style="margin-left: 8px; width: 632px;">
-						<h2>How to play</h2>
-						<p>The player has to shoot enemies by pressing Space and moving left and right on the screen. Every time an enemy goes beyond the player reach, meaning that its behind the player, the player score will not be affected. <br>If one enemy colides with the player, the enemy will disapear and the player will lose 1 HP point.</p>
-						<h2>Goal</h2>
-						<p>Get the maximum amount of points posible.</p>
-						<h2>Controls</h2>
-						<p>Left Arrow Key: Move player to the left. <br>Up Arrow Key: Move player upwards. <br>Down Arrow Key: Move player downwards <br>Right Arrow Key: Move player to the right. <br>Space: Shoot Misiles.</p>
-						<h2>Technial Specifications</h2>
-						<p>This game has moving objects as well as moving background. These toghether make a parallax effect that helps for better visuals</p>
-						<h2>Highlights</h2>
-						<p>Every visible propety such as Enemy position and background is Random. This way the player can't learn what pattern it has and sometimes makes for a greater challnge</p>
-					</div>			
-				</div>
-			</div>
-		</div>
+	<body onload="centraIampliaCanvas(myCanvas);joc();" onresize="centraIampliaCanvas(myCanvas)" style="margin: 0px;">
+		<div id="info" style="position:fixed;z-index:2;">Hola</div>
+		<div id="caixa1" style="position:fixed;width:100px;height:100px;
+		background-color:red;left:200px;bottom:200px;z-index:2;"></div>
+		<div id="caixa2" style="position:fixed;width:100px;height:100px;
+		background-color:blue;left:50px;bottom:100px;z-index:2;"></div>
+		<script>
+		_preparaNavegador();
+		window.ontouchstart=premPantalla;
+		window.ontouchmove=mouPantalla;
+		window.ontouchend=deixaPantalla;
+		window.ontouchcancel=deixaPantalla;
+		var cX;
+		var cY;
+		function premPantalla(obj){
+			//console.log(obj);
+			console.log(obj.touches[0].target.id);
+			
+			mouPantalla(obj);
+			cX=obj.touches[0].pageX;
+			cY=obj.touches[0].pageY;
+		}
+
+		function mouPantalla(obj){
+			mostraInfo(obj);
+			//console.log(obj);
+			deixaPantalla(obj);
+			if (obj.target.id == "caixa1") {spacebar=true;return;}
+			
+			if (cX < (obj.touches[0].pageX+10)){
+				console.log("Right");
+				rightArrow=true;
+			} 
+			if (cX > (obj.touches[0].pageX-10)) {
+				console.log("Left");
+				leftArrow = true;
+			}
+			if (cY > (obj.touches[0].pageY-10)) {
+			//if (obj.touches[0].pageY < (window.innerHeight - 100 - 50)) {
+				console.log("Up");
+				upArrow=true;
+			} 
+			if (cY < (obj.touches[0].pageY+10)) {
+				console.log("Down");
+				downArrow=true;
+			}
+		}
+
+		function deixaPantalla(obj){
+			info.innerHTML="";
+			upArrow=false;
+			downArrow=false;
+			rightArrow=false;
+			leftArrow=false;
+			spacebar=false;
+		}
+
+		function mostraInfo(obj){
+			info.innerHTML="target.tagName: "+obj.touches[0].target.tagName+", target.id:"+obj.touches[0].target.id+"<br>"+"pageX:"+obj.touches[0].pageX+", pageY:"+obj.touches[0].pageY+"<br>";
+		}
+
+		</script>
+		<canvas id="myCanvas" width="640" height="480" style="position: absolute; background-color:black;" >
 	</body>
 </html>

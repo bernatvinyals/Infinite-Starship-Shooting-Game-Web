@@ -1,3 +1,28 @@
+function _centraIampliaCanvas(obj){
+	var ctx = obj.getContext("2d");
+	document.body.style.height = window.innerHeight;
+	requestAnimationFrame (function(){ // Alguns navegadors triguen una mica a indicar mida correcte de pantalla.
+		console.log("HE ARRIBAT");
+		//obj.style.width = obj.width + "px";
+		//obj.style.height = obj.height + "px";
+		obj.style.left = window.innerWidth/ 2 - obj.width / 2+"px ";
+		obj.style.bottom =window.innerHeight/ 2 - obj.height / 2+"px";
+		var w =  window.innerWidth/obj.width;
+		var h =  window.innerHeight/obj.height;
+		var mesPetit=0;
+		if (h<w){mesPetit = h;}else{mesPetit = w;}
+		obj.style.transform = "scale("+mesPetit+")";
+		obj.style.msTransform="scale("+mesPetit+")";
+		obj.style.MozTransform="scale("+mesPetit+")";
+		obj.style.WebkitTransform="scale("+mesPetit+")";
+		//obj.style.height  = obj.height*h + "px";
+		console.log(mesPetit)
+		console.log("HE ARRIBAT 2 "+obj.width+" "+ w + " = "+obj.offsetWidth);
+		console.log("HE ARRIBAT 2 "+obj.height+" "+ h + " = "+obj.offsetHeight);
+		
+	});
+};
+
 
 function CheckCollision(RectA, RectB){
 	if ((RectA.PosX < RectB.PosX + RectB.Width) &&
