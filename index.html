@@ -63,8 +63,8 @@
 			mostraInfo(obj);
 			//console.log(obj);
 			deixaPantalla(obj);
-			if (obj.target.id == "caixa1") {spacebar=true;return;}
-			
+			if (obj.target.id == "caixa1") {spacebar=true;}
+			if (obj.touches[1]!=null) {spacebar=true;}
 			if (cX < (obj.touches[0].pageX+5)){
 				console.log("Right");
 				rightArrow=true;
