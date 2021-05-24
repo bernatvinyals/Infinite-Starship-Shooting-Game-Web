@@ -37,11 +37,11 @@
 		</style>
 	</head>
 	<body onload="centraIampliaCanvas(myCanvas);joc();" onresize="centraIampliaCanvas(myCanvas)" style="margin: 0px;">
-		<div id="info" style="position:fixed;z-index:2;">Hola</div>
+		<!--<div id="info" style="position:fixed;z-index:2;">Hola</div>
 		<div id="caixa1" style="position:fixed;width:100px;height:100px;
 		background-color:red;left:200px;bottom:200px;z-index:2;"></div>
 		<div id="caixa2" style="position:fixed;width:100px;height:100px;
-		background-color:blue;left:50px;bottom:100px;z-index:2;"></div>
+		background-color:blue;left:50px;bottom:100px;z-index:2;"></div>-->
 		<script>
 		_preparaNavegador();
 		window.ontouchstart=premPantalla;
@@ -51,20 +51,21 @@
 		var cX;
 		var cY;
 		function premPantalla(obj){
-			//console.log(obj);
-			console.log(obj.touches[0].target.id);
-			
+			console.log(obj.touches[0]);
 			mouPantalla(obj);
 			cX=obj.touches[0].pageX;
 			cY=obj.touches[0].pageY;
 		}
 
 		function mouPantalla(obj){
-			mostraInfo(obj);
-			//console.log(obj);
 			deixaPantalla(obj);
-			if (obj.target.id == "caixa1") {spacebar=true;}
-			if (obj.touches[1]!=null) {spacebar=true;}
+
+			if(scene != 2){//When not on game
+				spacebar = obj.touches.length>0;
+				console.log("pressed "+spacebar);
+			}else{
+				spacebar = obj.touches.length>1;
+			}
 			if (cX < (obj.touches[0].pageX+5)){
 				console.log("Right");
 				rightArrow=true;
@@ -74,7 +75,6 @@
 				leftArrow = true;
 			}
 			if (cY > (obj.touches[0].pageY-5)) {
-			//if (obj.touches[0].pageY < (window.innerHeight - 100 - 50)) {
 				console.log("Up");
 				upArrow=true;
 			} 
@@ -82,10 +82,10 @@
 				console.log("Down");
 				downArrow=true;
 			}
+			console.log(spacebar);
 		}
 
 		function deixaPantalla(obj){
-			info.innerHTML="";
 			upArrow=false;
 			downArrow=false;
 			rightArrow=false;
@@ -93,9 +93,9 @@
 			spacebar=false;
 		}
 
-		function mostraInfo(obj){
+		/*function mostraInfo(obj){
 			info.innerHTML="target.tagName: "+obj.touches[0].target.tagName+", target.id:"+obj.touches[0].target.id+"<br>"+"pageX:"+obj.touches[0].pageX+", pageY:"+obj.touches[0].pageY+"<br>";
-		}
+		}*/
 
 		</script>
 		<canvas id="myCanvas" width="640" height="480" style="position: absolute; background-color:black;" >

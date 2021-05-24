@@ -454,19 +454,21 @@ function loopGame(){
 	ctx.fillText(("Points: "+ Points), 10, 100); //Displays points
 	ctx.fillText(("Time: "+ (Math.floor(timeelapsed/1000))),10, 460)
 }
-
-
-
 function checkForConfirmation() {
 	$(document).ready(function(){
         $(document).keydown(function(event){
             var keycode = (event.keycode ? event.keyCode : event.which);
-            if(keycode==32 && scene != 2){
+            if((keycode==32) && scene != 2){
             	scene = 2;
             	restaringLoop();
             }
         });
+		if(spacebar==true){
+			scene = 2;
+			restaringLoop();
+		}
     });
+	
 }
 function restaringLoop(){
 	//Function to restart all propieties of a game
